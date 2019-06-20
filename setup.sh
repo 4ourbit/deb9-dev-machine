@@ -730,7 +730,8 @@ title "Installing Pre-Requisite Packages";
     preload \
     gksu \
     snapd \
-    cifs-utils;
+    fuse \
+    smbnetfs;
 
     sudo updatedb;
     sudo rm /usr/share/applications/gksu.desktop;
