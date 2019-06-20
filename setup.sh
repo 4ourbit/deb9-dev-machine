@@ -729,7 +729,8 @@ title "Installing Pre-Requisite Packages";
     vim \
     preload \
     gksu \
-    snapd;
+    snapd \
+    cifs-utils;
 
     sudo updatedb;
     sudo rm /usr/share/applications/gksu.desktop;
