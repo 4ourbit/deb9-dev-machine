@@ -11,7 +11,7 @@ versionDapp="0.27.14";
 versionNode="9";
 versionPopcorn="0.3.10";
 versionPhpStorm="2018.3.1";
-versionDockerCompose="1.22.0";
+versionDockerCompose="1.24.0";
 
 # Disallow running with sudo or su
 ##########################################################
