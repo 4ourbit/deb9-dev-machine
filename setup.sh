@@ -708,33 +708,18 @@ clear;
 # Preparation
 ##########################################################
 title "Installing Pre-Requisite Packages";
-    cd ~/;
-    sudo chown -R $(whoami) ~/
     sudo apt update;
     sudo apt dist-upgrade -y;
     sudo apt autoremove -y --purge;
 
-    sudo apt install -y ca-certificates \
-    apt-transport-https \
-    software-properties-common \
+    sudo apt install -y apt-transport-https \
     wget \
     curl \
-    htop \
-    mlocate \
-    gnupg2 \
-    cmake \
-    libssh2-1-dev \
-    libssl-dev \
+    libnotify-bin \
     nano \
-    vim \
     preload \
-    gksu \
-    snapd \
     fuse \
     smbnetfs;
-
-    sudo updatedb;
-    sudo rm /usr/share/applications/gksu.desktop;
 breakLine;
 
 title "Adding Repositories";
