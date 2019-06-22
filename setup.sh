@@ -719,7 +719,8 @@ title "Installing Pre-Requisite Packages";
     nano \
     preload \
     fuse \
-    smbnetfs;
+    smbnetfs \
+    xclip;
 breakLine;
 
 title "Adding Repositories";
@@ -828,7 +829,6 @@ done
 # Clean
 ##########################################################
 title "Finalising & Cleaning Up...";
-    sudo chown -R $(whoami) ~/;
     sudo apt --fix-broken install -y;
     sudo apt dist-upgrade -y;
     sudo apt autoremove -y --purge;
