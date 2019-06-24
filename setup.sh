@@ -58,7 +58,7 @@ installedPhp=0;
 installedNode=0;
 installedSublime=0;
 installedMySqlServer=0;
-repoUrl="https://raw.githubusercontent.com/andrewbrg/deb9-dev-machine/master/";
+repoUrl="https://raw.githubusercontent.com/4ourbit/deb9-dev-machine/master/";
 
 ###############################################################
 ## REPOSITORIES
@@ -666,19 +666,6 @@ cmd=(dialog --backtitle "Debian 9 Developer Container - USAGE: <space> select/un
 
 options=(
     01 "Git" on
-    02 "Node v${versionNode}" on
-    03 "PHP v${versionPhp} with PECL" on
-    04 "Ruby with DAPP v${versionDapp}" on
-    05 "Python" off
-    06 "GoLang v${versionGo}" off
-    07 "Yarn (package manager)" on
-    08 "Composer (package manager)" on
-    09 "React Native" on
-    10 "Apache Cordova" on
-    11 "Phonegap" on
-    12 "Webpack" on
-    13 "Memcached server" on
-    14 "Redis server" on
     15 "Docker CE (with docker compose)" off
     16 "Kubernetes (Kubectl)" off
     17 "Helm v${versionHelm}" on
@@ -686,8 +673,6 @@ options=(
     19 "Postman" on
     20 "Laravel installer" on
     21 "Wine" off
-    22 "MySql Community Server" on
-    23 "SQLite (database tool)" on
     24 "DBeaver (database tool)" off
     25 "Redis Desktop Manager" on
     26 "Atom IDE" off
@@ -707,11 +692,8 @@ clear;
 
 # Preparation
 ##########################################################
-title "Installing Pre-Requisite Packages";
-    sudo apt update;
-    sudo apt dist-upgrade -y;
-    sudo apt autoremove -y --purge;
 
+title "Installing Pre-Requisite Packages";
     sudo apt install -y apt-transport-https \
     wget \
     curl \
@@ -722,6 +704,12 @@ title "Installing Pre-Requisite Packages";
     smbnetfs \
     xclip;
 breakLine;
+
+alias alert='notify-send --urgency=low --app-name="$(uname -n)" -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
+alias pbcopy='xclip -selection clipboard'
+alias pbpaste='xclip -selection clipboard -o'
+
+alias | sudo tee ~/.bash_aliases;
 
 title "Adding Repositories";
 for choice in ${choices}
