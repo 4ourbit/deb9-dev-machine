@@ -42,6 +42,7 @@ breakLine() {
 notify() {
     printf "\n";
     printf "\033[1;46m $1 \033[0m \n";
+    notify-send $1;
 }
 
 curlToFile() {
@@ -90,6 +91,7 @@ repoDocker() {
     if [[ ! -f /var/lib/dpkg/info/docker-ce.list ]]; then
         notify "Adding Docker repository";
         curl -fsSL "https://download.docker.com/linux/debian/gpg" | sudo apt-key add -;
+        sudo apt install lsb-release
         sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable";
     fi
 }
@@ -162,6 +164,7 @@ repoRemmina() {
 repoGoogleSdk() {
     if [[ ! -f /etc/apt/sources.list.d/google-cloud-sdk.list ]]; then
         notify "Adding GCE repository";
+        sudo apt install lsb-release
         export CLOUD_SDK_REPO="cloud-sdk-$(lsb_release -c -s)";
         echo "deb http://packages.cloud.google.com/apt $CLOUD_SDK_REPO main" | sudo tee -a /etc/apt/sources.list.d/google-cloud-sdk.list;
         curl -fsSL "https://packages.cloud.google.com/apt/doc/apt-key.gpg" | sudo apt-key add -;
@@ -495,7 +498,8 @@ installWine() {
     mkdir -p ~/.wine/drive_c/Resources/Themes/;
     unzip ~/Royale_2007.zip -d ~/.wine/drive_c/Resources/Themes/;
 
-    notify "Cleaning up...";
+    
+    "Cleaning up...";
     echo "y" | rm ~/wine_fontsmoothing;
     echo "y" | rm ~/Royale_2007.zip;
 }
@@ -805,7 +809,6 @@ do
         26) installAtom ;;
         27) installVsCode ;;
         28) installSublime ;;
-        29) installPhpStorm ;;
         30) installSoftwareCenter ;;
         31) installRemmina ;;
         32) installGoogleSdk ;;
