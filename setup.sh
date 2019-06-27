@@ -92,7 +92,7 @@ repoDocker() {
         notify "Adding Docker repository";
         curl -fsSL "https://download.docker.com/linux/debian/gpg" | sudo apt-key add -;
         sudo apt install -y lsb-release
-        sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable";
+        echo "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list;
     fi
 }
 
@@ -102,7 +102,7 @@ repoKubernetes() {
     if [[ ! -f /etc/apt/sources.list.d/kubernetes.list ]]; then
         notify "Adding Kubernetes repository";
         curl -fsSL "https://packages.cloud.google.com/apt/doc/apt-key.gpg" | sudo apt-key add -;
-        echo "deb http://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list;
+        echo "deb https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list;
     fi
 }
 
