@@ -497,9 +497,8 @@ installWine() {
     sudo chown -R $(whoami) ~/;
     mkdir -p ~/.wine/drive_c/Resources/Themes/;
     unzip ~/Royale_2007.zip -d ~/.wine/drive_c/Resources/Themes/;
-
     
-    "Cleaning up...";
+    notify "Cleaning up...";
     echo "y" | rm ~/wine_fontsmoothing;
     echo "y" | rm ~/Royale_2007.zip;
 }
