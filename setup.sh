@@ -42,7 +42,7 @@ breakLine() {
 notify() {
     printf "\n";
     printf "\033[1;46m $1 \033[0m \n";
-    notify-send $1;
+    notify-send "$1";
 }
 
 curlToFile() {
@@ -91,7 +91,7 @@ repoDocker() {
     if [[ ! -f /var/lib/dpkg/info/docker-ce.list ]]; then
         notify "Adding Docker repository";
         curl -fsSL "https://download.docker.com/linux/debian/gpg" | sudo apt-key add -;
-        sudo apt install lsb-release
+        sudo apt install -y lsb-release
         sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable";
     fi
 }
@@ -164,7 +164,7 @@ repoRemmina() {
 repoGoogleSdk() {
     if [[ ! -f /etc/apt/sources.list.d/google-cloud-sdk.list ]]; then
         notify "Adding GCE repository";
-        sudo apt install lsb-release
+        sudo apt install -y lsb-release
         export CLOUD_SDK_REPO="cloud-sdk-$(lsb_release -c -s)";
         echo "deb http://packages.cloud.google.com/apt $CLOUD_SDK_REPO main" | sudo tee -a /etc/apt/sources.list.d/google-cloud-sdk.list;
         curl -fsSL "https://packages.cloud.google.com/apt/doc/apt-key.gpg" | sudo apt-key add -;
