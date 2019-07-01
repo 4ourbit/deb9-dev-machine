@@ -405,38 +405,6 @@ installDocker() {
 
     sudo groupadd docker;
     sudo usermod -aG docker ${USER};
-
-    notify "Install a separate runc environment? (recommended on chromebooks)";
-
-    while true; do
-        read -p "(Y/n)" yn
-        case ${yn} in
-            [Yy]* )
-                if [[ ${installedGo} -ne 1 ]] && [[ "$(command -v go)" == '' ]]; then
-                    breakLine;
-                    installGoLang;
-                fi
-
-                sudo sed -i -e 's/ExecStartPre=\/sbin\/modprobe overlay/#ExecStartPre=\/sbin\/modprobe overlay/g' /lib/systemd/system/containerd.service;
-
-                sudo apt install libseccomp-dev -y;
-                go get -v github.com/opencontainers/runc;
-
-                cd ${GOPATH}/src/github.com/opencontainers/runc;
-                make BUILDTAGS='seccomp apparmor';
-
-                sudo cp ${GOPATH}/src/github.com/opencontainers/runc/runc /usr/local/bin/runc-master;
-
-                curlToFile ${repoUrl}"docker/daemon.json" /etc/docker/daemon.json;
-                sudo systemctl daemon-reload;
-                sudo systemctl restart containerd.service;
-                sudo systemctl restart docker;
-            break;;
-            [Nn]* ) break;;
-            * ) echo "Please answer yes or no.";;
-        esac
-    done
-
     breakLine;
 }
 
@@ -655,6 +623,30 @@ installMySqlServer() {
     breakLine;
 }
 
+# curl
+##########################################################
+installCurl() {
+    title "Installing curl";
+    sudo apt install -y curl;
+    breakLine;
+}
+
+# nano
+##########################################################
+installNano() {
+    title "Installing nano";
+    sudo apt install -y nano;
+    breakLine;
+}
+
+# smbnetfs
+##########################################################
+installSmbNetFS() {
+    title "Installing SmbNetFS";
+    sudo apt install -y fuse smbnetfs;
+    breakLine;
+}
+
 ###############################################################
 ## MAIN PROGRAM
 ###############################################################
@@ -668,25 +660,19 @@ cmd=(dialog --backtitle "Debian 9 Developer Container - USAGE: <space> select/un
 --checklist "Select installable packages:" 42 50 50);
 
 options=(
-    01 "Git" on
+    01 "Git" off
     15 "Docker CE (with docker compose)" off
     16 "Kubernetes (Kubectl)" off
-    17 "Helm v${versionHelm}" on
-    18 "Sops v${versionSops}" on
-    19 "Postman" on
-    20 "Laravel installer" on
+    17 "Helm v${versionHelm}" off
+    19 "Postman" off
     21 "Wine" off
-    24 "DBeaver (database tool)" off
-    25 "Redis Desktop Manager" on
     26 "Atom IDE" off
     27 "VS Code IDE" off
-    28 "Sublime Text IDE" on
-    29 "PhpStorm IDE v${versionPhpStorm}" off
     30 "Software Center" on
-    31 "Remmina (Remote Desktop Client)" off
     32 "Google Cloud SDK" off
-    33 "Popcorn Time v${versionPopcorn}" off
-    34 "ZSH Terminal Plugin" on
+    35 "Curl" off
+    36 "Nano" off
+    37 "SmbNetFS" off
 );
 
 choices=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty);
@@ -697,14 +683,7 @@ clear;
 ##########################################################
 
 title "Installing Pre-Requisite Packages";
-    sudo apt install -y apt-transport-https \
-    wget \
-    curl \
-    libnotify-bin \
-    nano \
-    preload \
-    fuse \
-    smbnetfs \
+    sudo apt install -y libnotify-bin \
     xclip;
 breakLine;
 
@@ -813,6 +792,9 @@ do
         32) installGoogleSdk ;;
         33) installPopcorn ;;
         34) installZsh ;;
+        35) installCurl ;;
+        36) installNano ;;
+        37) installSmbNetFS ;;
     esac
 done
 
