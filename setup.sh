@@ -128,22 +128,12 @@ repoAtom() {
     fi
 }
 
-# VS Code
-##########################################################
-repoVsCode() {
-    if [[ ! -f /etc/apt/sources.list.d/vscode.list ]]; then
-        notify "Adding VSCode repository";
-        curl "https://packages.microsoft.com/keys/microsoft.asc" | gpg --dearmor > microsoft.gpg;
-        sudo install -o root -g root -m 644 microsoft.gpg /etc/apt/trusted.gpg.d/;
-        echo "deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main" | sudo tee /etc/apt/sources.list.d/vscode.list;
-    fi
-}
-
 # Sublime
 ##########################################################
 repoSublime() {
     if [[ ! -f /etc/apt/sources.list.d/sublime-text.list ]]; then
         notify "Adding Sublime Text repository";
+        sudo apt install -y curl;        
         curl -fsSL "https://download.sublimetext.com/sublimehq-pub.gpg" | sudo apt-key add -;
         echo "deb https://download.sublimetext.com/ apt/stable/" | sudo tee /etc/apt/sources.list.d/sublime-text.list;
     fi
@@ -164,7 +154,7 @@ repoRemmina() {
 repoGoogleSdk() {
     if [[ ! -f /etc/apt/sources.list.d/google-cloud-sdk.list ]]; then
         notify "Adding GCE repository";
-        sudo apt install -y lsb-release
+        sudo apt install -y lsb-release curl;
         export CLOUD_SDK_REPO="cloud-sdk-$(lsb_release -c -s)";
         echo "deb http://packages.cloud.google.com/apt $CLOUD_SDK_REPO main" | sudo tee -a /etc/apt/sources.list.d/google-cloud-sdk.list;
         curl -fsSL "https://packages.cloud.google.com/apt/doc/apt-key.gpg" | sudo apt-key add -;
@@ -498,14 +488,6 @@ installAtom() {
     breakLine;
 }
 
-# VS Code
-##########################################################
-installVsCode() {
-    title "Installing VS Code IDE";
-    sudo apt install -y code;
-    breakLine;
-}
-
 # Sublime Text
 ##########################################################
 installSublime() {
@@ -667,7 +649,6 @@ options=(
     19 "Postman" off
     21 "Wine" off
     26 "Atom IDE" off
-    27 "VS Code IDE" off
     30 "Software Center" on
     32 "Google Cloud SDK" off
     35 "Curl" off
@@ -706,7 +687,6 @@ do
         21) repoWine ;;
         22) repoMySqlServer ;;
         26) repoAtom ;;
-        27) repoVsCode ;;
         28) repoSublime ;;
         31) repoRemmina ;;
         32) repoGoogleSdk ;;
@@ -785,7 +765,6 @@ do
         24) installDbeaver ;;
         25) installRedisDesktopManager ;;
         26) installAtom ;;
-        27) installVsCode ;;
         28) installSublime ;;
         30) installSoftwareCenter ;;
         31) installRemmina ;;
