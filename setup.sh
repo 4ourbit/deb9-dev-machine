@@ -70,6 +70,7 @@ repoUrl="https://raw.githubusercontent.com/4ourbit/deb9-dev-machine/master/";
 repoPhp() {
     if [[ ! -f /etc/apt/sources.list.d/php.list ]]; then
         notify "Adding PHP sury repository";
+        sudo apt install -y curl;
         curl -fsSL "https://packages.sury.org/php/apt.gpg" | sudo apt-key add -;
         echo "deb https://packages.sury.org/php/ stretch main" | sudo tee /etc/apt/sources.list.d/php.list;
     fi
@@ -80,6 +81,7 @@ repoPhp() {
 repoYarn() {
     if [[ ! -f /etc/apt/sources.list.d/yarn.list ]]; then
         notify "Adding Yarn repository";
+        sudo apt install -y curl;
         curl -fsSL "https://dl.yarnpkg.com/debian/pubkey.gpg" | sudo apt-key add -;
         echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list;
     fi
@@ -90,8 +92,8 @@ repoYarn() {
 repoDocker() {
     if [[ ! -f /var/lib/dpkg/info/docker-ce.list ]]; then
         notify "Adding Docker repository";
+        sudo apt install -y curl lsb-release;
         curl -fsSL "https://download.docker.com/linux/debian/gpg" | sudo apt-key add -;
-        sudo apt install -y lsb-release
         echo "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list;
     fi
 }
@@ -101,6 +103,7 @@ repoDocker() {
 repoKubernetes() {
     if [[ ! -f /etc/apt/sources.list.d/kubernetes.list ]]; then
         notify "Adding Kubernetes repository";
+        sudo apt install -y curl;
         curl -fsSL "https://packages.cloud.google.com/apt/doc/apt-key.gpg" | sudo apt-key add -;
         echo "deb https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list;
     fi
@@ -111,6 +114,7 @@ repoKubernetes() {
 repoWine() {
     if [[ ! -f /var/lib/dpkg/info/wine-stable.list ]]; then
         notify "Adding Wine repository";
+        sudo apt install -y curl;
         sudo dpkg --add-architecture i386;
         curl -fsSL "https://dl.winehq.org/wine-builds/winehq.key" | sudo apt-key add -;
         curl -fsSL "https://dl.winehq.org/wine-builds/Release.key" | sudo apt-key add -;
@@ -123,6 +127,7 @@ repoWine() {
 repoAtom() {
     if [[ ! -f /etc/apt/sources.list.d/atom.list ]]; then
         notify "Adding Atom IDE repository";
+        sudo apt install -y curl;
         curl -fsSL "https://packagecloud.io/AtomEditor/atom/gpgkey" | sudo apt-key add -;
         echo "deb [arch=amd64] https://packagecloud.io/AtomEditor/atom/any/ any main" | sudo tee /etc/apt/sources.list.d/atom.list;
     fi
@@ -154,7 +159,7 @@ repoRemmina() {
 repoGoogleSdk() {
     if [[ ! -f /etc/apt/sources.list.d/google-cloud-sdk.list ]]; then
         notify "Adding GCE repository";
-        sudo apt install -y lsb-release curl;
+        sudo apt install -y curl lsb-release;
         export CLOUD_SDK_REPO="cloud-sdk-$(lsb_release -c -s)";
         echo "deb http://packages.cloud.google.com/apt $CLOUD_SDK_REPO main" | sudo tee -a /etc/apt/sources.list.d/google-cloud-sdk.list;
         curl -fsSL "https://packages.cloud.google.com/apt/doc/apt-key.gpg" | sudo apt-key add -;
@@ -175,6 +180,7 @@ repoVlc() {
 repoMySqlServer() {
     if [[ ! -f /var/lib/dpkg/info/mysql-apt-config.list ]]; then
         notify "Adding MySQL Community Server repository";
+        sudo apt install -y curl;
         curlToFile "https://dev.mysql.com/get/mysql-apt-config_0.8.11-1_all.deb" "mysql.deb";
         sudo dpkg -i mysql.deb;
 
