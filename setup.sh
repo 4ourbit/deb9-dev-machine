@@ -23,10 +23,6 @@ fi
 ###############################################################
 ## HELPERS
 ###############################################################
-sudo apt install -y libnotify-bin
-alias alert='notify-send --urgency=low --app-name="$(uname -n)" -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
-alias | sudo tee ~/.bash_aliases;
-
 title() {
     printf "\033[1;42m";
     printf '%*s\n'  "${COLUMNS:-$(tput cols)}" '' | tr ' ' ' ';
@@ -43,11 +39,22 @@ breakLine() {
     sleep .5;
 }
 
+sudo apt install -y libnotify-bin;
+alias alert='notify-send --urgency=low --app-name="$(uname -n)" -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
+
 notify() {
     printf "\n";
     printf "\033[1;46m $1 \033[0m \n";
     notify-send "$1";
 }
+
+title "Installing Pre-Requisite Packages";
+    sudo apt install -y xclip;
+    alias pbcopy='xclip -selection clipboard';
+    alias pbpaste='xclip -selection clipboard -o';
+    alias | sudo tee ~/.bash_aliases;
+    notify "Pre-Requisite Packages installed"
+breakLine;
 
 curlToFile() {
     notify "Downloading: $1 ----> $2";
@@ -672,14 +679,6 @@ clear;
 
 # Preparation
 ##########################################################
-
-title "Installing Pre-Requisite Packages";
-    sudo apt install -y xclip;
-    alias pbcopy='xclip -selection clipboard';
-    alias pbpaste='xclip -selection clipboard -o';
-    alias | sudo tee ~/.bash_aliases;
-breakLine;
-
 title "Adding Repositories";
 for choice in ${choices}
 do
