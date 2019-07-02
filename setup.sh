@@ -23,6 +23,10 @@ fi
 ###############################################################
 ## HELPERS
 ###############################################################
+sudo apt install -y libnotify-bin
+alias alert='notify-send --urgency=low --app-name="$(uname -n)" -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
+alias | sudo tee ~/.bash_aliases;
+
 title() {
     printf "\033[1;42m";
     printf '%*s\n'  "${COLUMNS:-$(tput cols)}" '' | tr ' ' ' ';
@@ -670,15 +674,11 @@ clear;
 ##########################################################
 
 title "Installing Pre-Requisite Packages";
-    sudo apt install -y libnotify-bin \
-    xclip;
+    sudo apt install -y xclip;
+    alias pbcopy='xclip -selection clipboard';
+    alias pbpaste='xclip -selection clipboard -o';
+    alias | sudo tee ~/.bash_aliases;
 breakLine;
-
-alias alert='notify-send --urgency=low --app-name="$(uname -n)" -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
-alias pbcopy='xclip -selection clipboard'
-alias pbpaste='xclip -selection clipboard -o'
-
-alias | sudo tee ~/.bash_aliases;
 
 title "Adding Repositories";
 for choice in ${choices}
