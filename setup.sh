@@ -158,12 +158,12 @@ repoSublime() {
     fi
 }
 
-# Remmina
+# Backports
 ##########################################################
-repoRemmina() {
-    if [[ ! -f /etc/apt/sources.list.d/remmina.list ]]; then
-        notify "Adding Remmina repository";
-        sudo touch /etc/apt/sources.list.d/remmina.list;
+repoBackports() {
+    if [[ ! -f /etc/apt/sources.list.d/stretch-backports.list ]]; then
+        notify "Adding Backports repository";
+        sudo touch /etc/apt/sources.list.d/stretch-backports.list;
         echo "deb http://ftp.debian.org/debian stretch-backports main" | sudo tee --append /etc/apt/sources.list.d/stretch-backports.list >> /dev/null
     fi
 }
@@ -649,6 +649,14 @@ installSmbNetFS() {
     breakLine;
 }
 
+# Cockpit
+##########################################################
+installCockpit() {
+    title "Installing Cockpit";
+    sudo apt install -t stretch-backports cockpit -y;
+    breakLine;
+}
+
 ###############################################################
 ## MAIN PROGRAM
 ###############################################################
@@ -674,6 +682,7 @@ options=(
     35 "Curl" off
     36 "Nano" off
     37 "SmbNetFS" off
+    38 "Cockpit" off
 );
 
 choices=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty);
@@ -696,9 +705,10 @@ do
         22) repoMySqlServer ;;
         26) repoAtom ;;
         28) repoSublime ;;
-        31) repoRemmina ;;
+        31) repoBackports ;;
         32) repoGoogleSdk ;;
         33) repoVlc ;;
+        38) repoBackports ;;
     esac
 done
 notify "Required repositories have been added...";
@@ -782,6 +792,7 @@ do
         35) installCurl ;;
         36) installNano ;;
         37) installSmbNetFS ;;
+        38) installCockpit ;;
     esac
 done
 
