@@ -53,7 +53,7 @@ title "Installing Pre-Requisite Packages";
     alias pbcopy='xclip -selection clipboard';
     alias pbpaste='xclip -selection clipboard -o';
     alias h='history';
-    alias r='fc s';
+    alias r='fc -s';
     alias ll='ls -lsa';
     alias | sudo tee ~/.bash_aliases;
     notify "Pre-Requisite Packages installed"
