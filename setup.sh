@@ -52,6 +52,7 @@ title "Installing Pre-Requisite Packages";
     sudo apt install -y xclip;
     alias pbcopy='xclip -selection clipboard';
     alias pbpaste='xclip -selection clipboard -o';
+    alias grep='grep --color=auto';
     alias h='history';
     alias r='fc -s';
     alias ll='ls -lsa';
