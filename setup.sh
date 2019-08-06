@@ -412,6 +412,8 @@ installDocker() {
     sudo apt install -y docker-ce;
     curlToFile "https://github.com/docker/compose/releases/download/${versionDockerCompose}/docker-compose-$(uname -s)-$(uname -m)" "/usr/local/bin/docker-compose";
     sudo chmod +x /usr/local/bin/docker-compose;
+    
+    source <(echo "declare -x DOCKER_HOST=tcp://docker.lxd:2375" | sudo tee /etc/profile.d/docker-host.sh)
 
     sudo groupadd docker;
     sudo usermod -aG docker ${USER};
