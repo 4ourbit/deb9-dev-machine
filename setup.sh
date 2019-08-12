@@ -50,6 +50,7 @@ notify() {
 
 title "Installing Pre-Requisite Packages";
     sudo apt install -y xclip;
+    alias sudo='sudo -E';
     alias pbcopy='xclip -selection clipboard';
     alias pbpaste='xclip -selection clipboard -o';
     alias grep='grep --color=auto';
