@@ -49,7 +49,7 @@ notify() {
 }
 
 title "Installing Pre-Requisite Packages";
-    sudo apt install -y xclip;
+    sudo apt install -y curl lsb-release xclip;
     alias sudo='sudo -E';
     alias pbcopy='xclip -selection clipboard';
     alias pbpaste='xclip -selection clipboard -o';
@@ -69,13 +69,13 @@ curlToFile() {
 ###############################################################
 ## REGISTERED VARIABLES
 ###############################################################
+installedGit=0;
 installedGo=0;
 installedZsh=0;
 installedPhp=0;
 installedNode=0;
-installedSublime=0;
-installedMySqlServer=0;
 repoUrl="https://raw.githubusercontent.com/4ourbit/deb9-dev-machine/master/";
+emacsStarterKit="https://github.com/4ourbit/emacs24-starter-kit"
 
 ###############################################################
 ## REPOSITORIES
@@ -86,20 +86,8 @@ repoUrl="https://raw.githubusercontent.com/4ourbit/deb9-dev-machine/master/";
 repoPhp() {
     if [[ ! -f /etc/apt/sources.list.d/php.list ]]; then
         notify "Adding PHP sury repository";
-        sudo apt install -y curl;
         curl -fsSL "https://packages.sury.org/php/apt.gpg" | sudo apt-key add -;
         echo "deb https://packages.sury.org/php/ stretch main" | sudo tee /etc/apt/sources.list.d/php.list;
-    fi
-}
-
-# Yarn
-##########################################################
-repoYarn() {
-    if [[ ! -f /etc/apt/sources.list.d/yarn.list ]]; then
-        notify "Adding Yarn repository";
-        sudo apt install -y curl;
-        curl -fsSL "https://dl.yarnpkg.com/debian/pubkey.gpg" | sudo apt-key add -;
-        echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list;
     fi
 }
 
@@ -108,7 +96,6 @@ repoYarn() {
 repoDocker() {
     if [[ ! -f /var/lib/dpkg/info/docker-ce.list ]]; then
         notify "Adding Docker repository";
-        sudo apt install -y curl lsb-release;
         curl -fsSL "https://download.docker.com/linux/debian/gpg" | sudo apt-key add -;
         echo "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list;
     fi
@@ -119,7 +106,6 @@ repoDocker() {
 repoKubernetes() {
     if [[ ! -f /etc/apt/sources.list.d/kubernetes.list ]]; then
         notify "Adding Kubernetes repository";
-        sudo apt install -y curl;
         curl -fsSL "https://packages.cloud.google.com/apt/doc/apt-key.gpg" | sudo apt-key add -;
         echo "deb https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list;
     fi
@@ -130,7 +116,6 @@ repoKubernetes() {
 repoWine() {
     if [[ ! -f /var/lib/dpkg/info/wine-stable.list ]]; then
         notify "Adding Wine repository";
-        sudo apt install -y curl;
         sudo dpkg --add-architecture i386;
         curl -fsSL "https://dl.winehq.org/wine-builds/winehq.key" | sudo apt-key add -;
         curl -fsSL "https://dl.winehq.org/wine-builds/Release.key" | sudo apt-key add -;
@@ -143,20 +128,8 @@ repoWine() {
 repoAtom() {
     if [[ ! -f /etc/apt/sources.list.d/atom.list ]]; then
         notify "Adding Atom IDE repository";
-        sudo apt install -y curl;
         curl -fsSL "https://packagecloud.io/AtomEditor/atom/gpgkey" | sudo apt-key add -;
         echo "deb [arch=amd64] https://packagecloud.io/AtomEditor/atom/any/ any main" | sudo tee /etc/apt/sources.list.d/atom.list;
-    fi
-}
-
-# Sublime
-##########################################################
-repoSublime() {
-    if [[ ! -f /etc/apt/sources.list.d/sublime-text.list ]]; then
-        notify "Adding Sublime Text repository";
-        sudo apt install -y curl;        
-        curl -fsSL "https://download.sublimetext.com/sublimehq-pub.gpg" | sudo apt-key add -;
-        echo "deb https://download.sublimetext.com/ apt/stable/" | sudo tee /etc/apt/sources.list.d/sublime-text.list;
     fi
 }
 
@@ -175,7 +148,6 @@ repoBackports() {
 repoGoogleSdk() {
     if [[ ! -f /etc/apt/sources.list.d/google-cloud-sdk.list ]]; then
         notify "Adding GCE repository";
-        sudo apt install -y curl lsb-release;
         export CLOUD_SDK_REPO="cloud-sdk-$(lsb_release -c -s)";
         echo "deb http://packages.cloud.google.com/apt $CLOUD_SDK_REPO main" | sudo tee -a /etc/apt/sources.list.d/google-cloud-sdk.list;
         curl -fsSL "https://packages.cloud.google.com/apt/doc/apt-key.gpg" | sudo apt-key add -;
@@ -191,21 +163,6 @@ repoVlc() {
     fi
 }
 
-# MySQL Community Server
-##########################################################
-repoMySqlServer() {
-    if [[ ! -f /var/lib/dpkg/info/mysql-apt-config.list ]]; then
-        notify "Adding MySQL Community Server repository";
-        sudo apt install -y curl;
-        curlToFile "https://dev.mysql.com/get/mysql-apt-config_0.8.11-1_all.deb" "mysql.deb";
-        sudo dpkg -i mysql.deb;
-
-        /etc/apparmor.d/local
-        echo 'y' | rm mysql.deb;
-    fi
-}
-
-
 ###############################################################
 ## INSTALLATION
 ###############################################################
@@ -220,6 +177,7 @@ installSoftwareCenter() {
 installGit() {
     title "Installing Git";
     sudo apt install -y git;
+    installedGit=1;
     breakLine;
 }
 
@@ -512,35 +470,13 @@ installAtom() {
     breakLine;
 }
 
-# Sublime Text
+# Emacs
 ##########################################################
-installSublime() {
-    title "Installing Sublime Text";
-    sudo apt install -y sublime-text;
-    sudo apt install -y python-pip;
-    sudo pip install -U CodeIntel;
+installEmacs() {
+    title "Installing Emacs";
+    sudo apt install -y emacs;
 
-    sudo chown -R $(whoami) ~/;
-
-    mkdir -p ~/.config/sublime-text-3/Packages/User/;
-
-    notify "Adding package control for sublime";
-    wget "https://packagecontrol.io/Package%20Control.sublime-package" -o ".config/sublime-text-3/Installed Packages/Package Control.sublime-package";
-
-    notify "Adding pre-installed packages for sublime";
-    curlToFile "${repoUrl}settings/PackageControl.sublime-settings" ".config/sublime-text-3/Packages/User/Package Control.sublime-settings";
-
-    notify "Applying default preferences to sublime";
-    curlToFile "${repoUrl}settings/Preferences.sublime-settings" ".config/sublime-text-3/Packages/User/Preferences.sublime-settings";
-
-    notify "Installing additional binaries for sublime auto-complete";
-    curlToFile "https://github.com/emmetio/pyv8-binaries/raw/master/pyv8-linux64-p3.zip" "bin.zip";
-
-    sudo mkdir -p ".config/sublime-text-3/Installed Packages/PyV8/";
-    sudo unzip ~/bin.zip -d ".config/sublime-text-3/Installed Packages/PyV8/";
-    sudo rm ~/bin.zip;
-
-    installedSublime=1;
+    git clone "${emacsStarterKit}" -o ~/.emacs.d;
     breakLine;
 }
 
@@ -618,25 +554,6 @@ installZsh() {
     breakLine;
 }
 
-# MySql Community Server
-##########################################################
-installMySqlServer() {
-    title "Installing MySql Community Server";
-    sudo apt install -y mysql-server;
-    sudo systemctl enable mysql;
-    sudo systemctl start mysql;
-    installedMySqlServer=1;
-    breakLine;
-}
-
-# curl
-##########################################################
-installCurl() {
-    title "Installing curl";
-    sudo apt install -y curl;
-    breakLine;
-}
-
 # nano
 ##########################################################
 installNano() {
@@ -674,17 +591,17 @@ cmd=(dialog --backtitle "Debian 9 Developer Container - USAGE: <space> select/un
 --checklist "Select installable packages:" 42 50 50);
 
 options=(
-    01 "Git" off
-    15 "Docker CE (with docker compose)" off
+    01 "Git" on
+    15 "Docker CE (with docker compose)" on
     16 "Kubernetes (Kubectl)" off
     17 "Helm v${versionHelm}" off
     19 "Postman" off
     21 "Wine" off
-    26 "Atom IDE" off
+    25 "Emacs" on
+    26 "Atom" off
     30 "Software Center" on
     32 "Google Cloud SDK" off
-    35 "Curl" off
-    36 "Nano" off
+    36 "Nano" on
     37 "SmbNetFS" off
     38 "Cockpit" off
 );
@@ -706,9 +623,6 @@ do
         15) repoDocker ;;
         16) repoKubernetes ;;
         21) repoWine ;;
-        22) repoMySqlServer ;;
-        26) repoAtom ;;
-        28) repoSublime ;;
         31) repoBackports ;;
         32) repoGoogleSdk ;;
         33) repoVlc ;;
@@ -782,10 +696,14 @@ do
             installLaravel;
         ;;
         21) installWine ;;
-        22) installMySqlServer ;;
         23) installSqLite ;;
         24) installDbeaver ;;
-        25) installRedisDesktopManager ;;
+        25)             
+            if [[ ${installedGit} -ne 1 ]]; then
+                installGit;
+            fi
+            installEmacs;
+        ;;
         26) installAtom ;;
         28) installSublime ;;
         30) installSoftwareCenter ;;
@@ -793,7 +711,6 @@ do
         32) installGoogleSdk ;;
         33) installPopcorn ;;
         34) installZsh ;;
-        35) installCurl ;;
         36) installNano ;;
         37) installSmbNetFS ;;
         38) installCockpit ;;
@@ -835,22 +752,6 @@ if [[ ${installedZsh} -eq 1 ]]; then
     echo "";
     echo "If the zsh plugin does not take effect you can manually activate it by adding /bin/zsh to you .bashrc file. ";
     echo "Further information & documentation on the ZSH plugin: https://github.com/robbyrussell/oh-my-zsh";
-fi
-
-if [[ ${installedSublime} -eq 1 ]]; then
-    breakLine;
-    notify "Sublime Text Detected..."
-    echo "";
-    echo "To complete the Sublime Text installation make sure to install the 'Package Control' plugin when first running Sublime."
-    echo "";
-fi
-
-if [[ ${installedMySqlServer} -eq 1 ]]; then
-    breakLine;
-    notify "MySql Community Server Detected..."
-    echo "";
-    echo "If you want to harden your MySql installation run: mysql-secure-install"
-    echo "";
 fi
 
 echo "";
