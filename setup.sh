@@ -57,7 +57,7 @@ title "Installing Pre-Requisite Packages";
     alias h='history';
     alias r='fc -s';
     alias ll='ls -lsa';
-    alias | sudo tee ~/.bash_aliases;
+    source <(alias | tee ~/.bash_aliases);
     notify "Pre-Requisite Packages installed"
 breakLine;
 
