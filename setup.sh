@@ -188,6 +188,7 @@ installFlatpak() {
 installGit() {
     title "Installing Git";
     sudo apt install -y git;
+    source <(curl -L https://raw.github.com/git/git/master/contrib/completion/git-prompt.sh | sudo tee /etc/profile.d/git-prompt.sh)
     installedGit=1;
     breakLine;
 }
