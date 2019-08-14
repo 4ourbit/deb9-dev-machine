@@ -69,6 +69,7 @@ curlToFile() {
 ###############################################################
 ## REGISTERED VARIABLES
 ###############################################################
+installedFlatpak=0;
 installedGit=0;
 installedGo=0;
 installedZsh=0;
@@ -170,6 +171,16 @@ repoVlc() {
 # Debian Software Center
 installSoftwareCenter() {
     sudo apt install -y gnome-software gnome-packagekit;
+}
+
+# Flatpack
+##########################################################
+installFlatpak() {
+    title "Installing Flatpak";
+    sudo apt install -y flatpak;
+    sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo;
+    installedFlatpak=1;
+    breakLine;
 }
 
 # Git
@@ -474,7 +485,8 @@ installAtom() {
 ##########################################################
 installEmacs() {
     title "Installing Emacs";
-    sudo apt install -y emacs;
+    sudo flatpak install -y flathub org.gnu.emacs;
+    alias emacs="flatpak run org.gnu.emacs";
 
     git clone "${emacsStarterKit}" -o ~/.emacs.d;
     breakLine;
@@ -699,6 +711,9 @@ do
         23) installSqLite ;;
         24) installDbeaver ;;
         25)             
+            if [[ ${installedFlatpak} -ne 1 ]]; then
+                installFlatpak;
+            fi
             if [[ ${installedGit} -ne 1 ]]; then
                 installGit;
             fi
