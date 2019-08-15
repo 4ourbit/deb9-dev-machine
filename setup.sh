@@ -722,9 +722,9 @@ do
         23) installSqLite ;;
         24) installDbeaver ;;
         25)             
-            if [[ ${installedFlatpak} -ne 1 ]]; then
-                installFlatpak;
-            fi
+            # if [[ ${installedFlatpak} -ne 1 ]]; then
+            #     installFlatpak;
+            # fi
             if [[ ${installedGit} -ne 1 ]]; then
                 installGit;
             fi
