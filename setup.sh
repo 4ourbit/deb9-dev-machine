@@ -488,8 +488,9 @@ installEmacs() {
     title "Installing Emacs";
     sudo flatpak install -y flathub org.gnu.emacs;
     alias emacs="flatpak run org.gnu.emacs";
+    source <(alias | tee ~/.bash_aliases);
 
-    git clone "${emacsStarterKit}" -o ~/.emacs.d;
+    # git clone "${emacsStarterKit}" -o ~/.emacs.d;
     breakLine;
 }
 
