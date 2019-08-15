@@ -488,13 +488,16 @@ installEmacs() {
     title "Installing Emacs";
     
     sudo apt install -y emacs \
+      emacs-goodies-el \
       elpa-magit \
       elpa-undo-tree \
       elpa-paredit \
       elpa-expand-region \
-      elpa-flx-ido \
       elpa-hydra \
-      elpa-ido-completing-read+;
+      elpa-flx-ido \
+      elpa-ido-completing-read+ \
+      elpa-ido-ubiquitous \
+      org-mode;
     # sudo flatpak install -y flathub org.gnu.emacs;
     # alias emacs="flatpak run org.gnu.emacs";
     # source <(alias | tee ~/.bash_aliases);
