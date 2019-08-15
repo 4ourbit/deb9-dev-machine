@@ -486,9 +486,18 @@ installAtom() {
 ##########################################################
 installEmacs() {
     title "Installing Emacs";
-    sudo flatpak install -y flathub org.gnu.emacs;
-    alias emacs="flatpak run org.gnu.emacs";
-    source <(alias | tee ~/.bash_aliases);
+    
+    sudo apt install -y emacs \
+      elpa-magit \
+      elpa-undo-tree \
+      elpa-paredit \
+      elpa-expand-region \
+      elpa-flx-ido \
+      elpa-hydra \
+      elpa-ido-completing-read+;
+    # sudo flatpak install -y flathub org.gnu.emacs;
+    # alias emacs="flatpak run org.gnu.emacs";
+    # source <(alias | tee ~/.bash_aliases);
 
     # git clone "${emacsStarterKit}" -o ~/.emacs.d;
     breakLine;
