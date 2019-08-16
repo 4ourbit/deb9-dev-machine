@@ -188,7 +188,9 @@ installFlatpak() {
 installGit() {
     title "Installing Git";
     sudo apt install -y git;
-    source <(curl -L https://raw.github.com/git/git/master/contrib/completion/git-prompt.sh | sudo tee /etc/profile.d/git-prompt.sh)
+    curl -L https://raw.github.com/git/git/master/contrib/completion/git-prompt.sh | sudo tee /etc/profile.d/git-prompt.sh
+    # echo PS1=$'\'$PS1\w\[\033[01;31m\]$(__git_ps1 "")\[\033[00m\]\$\'' | sudo tee --append /etc/profile.d/git-prompt.sh
+    source /etc/profile.d/git-prompt.sh
     installedGit=1;
     breakLine;
 }
