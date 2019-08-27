@@ -503,6 +503,7 @@ installEmacs() {
     # sudo flatpak install -y flathub org.gnu.emacs;
     # alias emacs="flatpak run org.gnu.emacs";
     # source <(alias | tee ~/.bash_aliases);
+    sudo sed -i 's|/emacs24 %F|/emacsclient.emacs24 --alternate-editor="" -c %F|' /usr/share/applications/emacs24.desktop
 
     # git clone "${emacsStarterKit}" -o ~/.emacs.d;
     breakLine;
