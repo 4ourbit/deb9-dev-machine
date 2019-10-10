@@ -191,7 +191,7 @@ installGit() {
     curl -L https://raw.github.com/git/git/master/contrib/completion/git-prompt.sh | sudo tee /etc/profile.d/git-prompt.sh
     echo "declare -x GIT_PS1_SHOWDIRTYSTATE=TRUE" | sudo tee --append /etc/profile.d/git-prompt.sh
     source /etc/profile.d/git-prompt.sh
-    echo "PS1=$'${PS1::-2}\[\033[01;31m\]\$(__git_ps1 "")\[\033[00m\]\$ '" | tee --append ~/.bashrc
+    echo "PS1=$'${PS1::-3}\[\033[01;31m\]\$(__git_ps1 "")\[\033[00m\]\$ '" | tee --append ~/.bashrc
     installedGit=1;
     breakLine;
 }
