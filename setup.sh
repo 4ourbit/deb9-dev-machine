@@ -392,6 +392,12 @@ installDocker() {
 
     sudo groupadd docker;
     sudo usermod -aG docker ${USER};
+    
+    sudo systemctl stop docker.service;
+    sudo systemctl stop docker.socket;
+    sudo systemctl disable docker.service;
+    sudo systemctl disable docker.socket;
+
     breakLine;
 }
 
