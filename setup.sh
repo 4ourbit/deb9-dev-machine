@@ -56,7 +56,7 @@ title "Installing Pre-Requisite Packages";
     alias grep='grep --color=auto';
     alias h='history';
     alias r='fc -s';
-    alias ll='ls -lsa';
+    alias ll='ls -lsa --group-directories-first';
     source <(alias | tee ~/.bash_aliases);
     notify "Pre-Requisite Packages installed"
 breakLine;
