@@ -498,6 +498,7 @@ installEmacs() {
     
     sudo apt install -y emacs \
       emacs-goodies-el \
+      aspell-de \
       elpa-magit \
       elpa-undo-tree \
       elpa-paredit \
