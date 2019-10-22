@@ -54,10 +54,11 @@ title "Installing Pre-Requisite Packages";
     alias pbcopy='xclip -selection clipboard';
     alias pbpaste='xclip -selection clipboard -o';
     alias grep='grep --color=auto';
+    alias ip='ip -color';
     alias h='history';
     alias r='fc -s';
     alias ll='ls -lsa --group-directories-first';
-    source <(alias | tee ~/.bash_aliases);
+    source <(alias | tee --append ~/.bash_aliases);
     notify "Pre-Requisite Packages installed"
 breakLine;
 
