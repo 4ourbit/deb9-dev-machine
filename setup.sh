@@ -53,7 +53,7 @@ title "Installing Pre-Requisite Packages";
     alias sudo='sudo -E';
     alias pbcopy='xclip -selection clipboard';
     alias pbpaste='xclip -selection clipboard -o';
-    alias grep='grep --color=auto';
+    alias grep='grep -n --color=auto';
     alias ip='ip -color';
     alias h='history';
     alias r='fc -s';
