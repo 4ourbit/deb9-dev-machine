@@ -55,6 +55,7 @@ title "Installing Pre-Requisite Packages";
     alias pbpaste='xclip -selection clipboard -o';
     alias grep='grep -n --color=auto';
     alias ip='ip -color';
+    alias ss='sudo ss -p';
     alias h='history';
     alias r='fc -s';
     alias ll='ls -lsa --group-directories-first';
