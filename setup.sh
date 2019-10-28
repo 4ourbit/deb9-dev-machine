@@ -6,7 +6,7 @@
 versionPhp="7.2";
 versionGo="1.11.4";
 versionHelm="2.10.0";
-versionSops="3.1.1";
+versionBat="0.12.1";
 versionDapp="0.27.14";
 versionNode="9";
 versionPopcorn="0.3.10";
@@ -422,13 +422,15 @@ installHelm() {
     breakLine;
 }
 
-# Sops
+# Bat
 ##########################################################
-installSops() {
-    title "Installing Sops v${versionSops}";
-    wget -O sops_${versionSops}_amd64.deb "https://github.com/mozilla/sops/releases/download/${versionSops}/sops_${versionSops}_amd64.deb";
-    sudo dpkg -i sops_${versionSops}_amd64.deb;
-    sudo rm sops_${versionSops}_amd64.deb;
+installBat() {
+    title "Installing bat v${versionBat}";
+    wget -O bat_${versionBat}_amd64.deb "https://github.com/sharkdp/bat/releases/download/v${versionBat}/bat_${versionBat}_amd64.deb";
+    sudo dpkg -i bat_${versionBat}_amd64.deb;
+    sudo rm bat_${versionBat}_amd64.deb;
+    alias cat="bat --plain";
+    source <(alias | tee ~/.bash_aliases);
     breakLine;
 }
 
@@ -634,7 +636,7 @@ options=(
     15 "Docker CE (with docker compose)" on
     16 "Kubernetes (Kubectl)" off
     17 "Helm v${versionHelm}" off
-    19 "Postman" off
+    18 "Bat" on
     21 "Wine" off
     25 "Emacs" on
     26 "Atom" off
@@ -721,12 +723,7 @@ do
         15) installDocker ;;
         16) installKubernetes ;;
         17) installHelm ;;
-        18)
-            if [[ ${installedGo} -ne 1 ]]; then
-                installGoLang;
-            fi
-            installSops;
-        ;;
+        18) installBat ;;
         19) installPostman ;;
         20)
             if [[ ${installedPhp} -ne 1 ]]; then
