@@ -301,11 +301,11 @@ installGoLang() {
     breakLine;
 }
 
-# Yarn
+# Tools
 ##########################################################
-installYarn() {
-    title "Installing Yarn";
-    sudo apt install -y yarn;
+installTools() {
+    title "Installing tools";
+    sudo apt install -y lsof iproute2 iproute2-doc socat;
     breakLine;
 }
 
@@ -399,6 +399,10 @@ installDocker() {
     sudo systemctl stop docker.socket;
     sudo systemctl disable docker.service;
     sudo systemctl disable docker.socket;
+    
+    sudo apt install socat;
+    
+    sudo systemctl start --user socat@5000 socat@8080 socat@8888 socat@9009
 
     breakLine;
 }
@@ -633,6 +637,7 @@ cmd=(dialog --backtitle "Debian 9 Developer Container - USAGE: <space> select/un
 
 options=(
     01 "Git" on
+    07 "Tools (ip, lsof)" on
     15 "Docker CE (with docker compose)" on
     16 "Kubernetes (Kubectl)" off
     17 "Helm v${versionHelm}" off
@@ -660,7 +665,6 @@ do
         03) repoPhp ;;
         08) repoPhp ;;
         20) repoPhp ;;
-        07) repoYarn ;;
         15) repoDocker ;;
         16) repoKubernetes ;;
         21) repoWine ;;
@@ -687,7 +691,7 @@ do
         04) installRuby ;;
         05) installPython ;;
         06) installGoLang ;;
-        07) installYarn ;;
+        07) installTools ;;
         08)
             if [[ ${installedPhp} -ne 1 ]]; then
                 installPhp;
