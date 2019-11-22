@@ -402,7 +402,9 @@ installDocker() {
     
     sudo apt install socat;
     
-    sudo systemctl start --user socat@5000 socat@8080 socat@8888 socat@9009
+    sudo cp .config/systemd/user/socat@.service /usr/lib/systemd/user;
+    sudo chmod 644 /usr/lib/systemd/user/socat@.service;
+    sudp systemctl --global start socat@5000 socat@8080 socat@8888 socat@9009;
 
     breakLine;
 }
