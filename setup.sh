@@ -647,7 +647,7 @@ options=(
     21 "Wine" off
     25 "Emacs" on
     26 "Atom" off
-    30 "Software Center" on
+    30 "Software Center (visual pkcon)" off
     32 "Google Cloud SDK" off
     36 "Nano" on
     37 "SmbNetFS" off
