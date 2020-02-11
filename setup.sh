@@ -190,10 +190,13 @@ installFlatpak() {
 installGit() {
     title "Installing Git";
     sudo apt install -y git;
-    curl -L https://raw.github.com/git/git/master/contrib/completion/git-prompt.sh | sudo tee /etc/profile.d/git-prompt.sh
-    echo "declare -x GIT_PS1_SHOWDIRTYSTATE=TRUE" | sudo tee --append /etc/profile.d/git-prompt.sh
-    source /etc/profile.d/git-prompt.sh
-    echo "PS1=$'${PS1::-3}\[\033[01;31m\]\$(__git_ps1 "")\[\033[00m\]\$ '" | tee --append ~/.bashrc
+    # ~/.bashrc:
+    # if [[ -e /usr/lib/git-core/git-sh-prompt ]]; then
+	  #          . /usr/lib/git-core/git-sh-prompt
+    #          declare -x GIT_PS1_SHOWDIRTYSTATE=TRUE
+    #          PS1="${PS1::-3}\[\033[01;31m\]\$(__git_ps1 '')\[\033[00m\]\$ "
+    # fi
+    source ~/.bashrc
     installedGit=1;
     breakLine;
 }
