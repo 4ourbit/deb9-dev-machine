@@ -71,14 +71,12 @@ curlToFile() {
 ###############################################################
 ## REGISTERED VARIABLES
 ###############################################################
-installedFlatpak=0;
 installedGit=0;
 installedGo=0;
 installedZsh=0;
 installedPhp=0;
 installedNode=0;
 repoUrl="https://raw.githubusercontent.com/4ourbit/deb9-dev-machine/master/";
-emacsStarterKit="https://github.com/4ourbit/emacs24-starter-kit"
 
 ###############################################################
 ## REPOSITORIES
@@ -175,16 +173,6 @@ installSoftwareCenter() {
     sudo apt install -y gnome-software gnome-packagekit;
 }
 
-# Flatpack
-##########################################################
-installFlatpak() {
-    title "Installing Flatpak";
-    sudo apt install -y flatpak;
-    sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo;
-    installedFlatpak=1;
-    breakLine;
-}
-
 # Git
 ##########################################################
 installGit() {
@@ -210,38 +198,6 @@ installNode() {
     sudo chown -R $(whoami) /usr/lib/node_modules;
     sudo chmod -R 777 /usr/lib/node_modules;
     installedNode=1;
-    breakLine;
-}
-
-# React Native
-##########################################################
-installReactNative() {
-    title "Installing React Native";
-    sudo npm install -g create-react-native-app;
-    breakLine;
-}
-
-# Cordova
-##########################################################
-installCordova() {
-    title "Installing Apache Cordova";
-    sudo npm install -g cordova;
-    breakLine;
-}
-
-# Phonegap
-##########################################################
-installPhoneGap() {
-    title "Installing Phone Gap";
-    sudo npm install -g phonegap;
-    breakLine;
-}
-
-# Webpack
-##########################################################
-installWebpack() {
-    title "Installing Webpack";
-    sudo npm install -g webpack;
     breakLine;
 }
 
@@ -504,32 +460,6 @@ installAtom() {
     breakLine;
 }
 
-# Emacs
-##########################################################
-installEmacs() {
-    title "Installing Emacs";
-    
-    sudo apt install -y emacs \
-      emacs-goodies-el \
-      aspell-de \
-      elpa-magit \
-      elpa-undo-tree \
-      elpa-paredit \
-      elpa-expand-region \
-      elpa-hydra \
-      elpa-flx-ido \
-      elpa-ido-completing-read+ \
-      elpa-ido-ubiquitous \
-      org-mode;
-    # sudo flatpak install -y flathub org.gnu.emacs;
-    # alias emacs="flatpak run org.gnu.emacs";
-    # source <(alias | tee ~/.bash_aliases);
-    sudo sed -i 's|/emacs24 %F|/emacsclient.emacs24 --alternate-editor="" -c %F|' /usr/share/applications/emacs24.desktop
-
-    # git clone "${emacsStarterKit}" -o ~/.emacs.d;
-    breakLine;
-}
-
 # PHP Storm
 ##########################################################
 installPhpStorm() {
@@ -648,7 +578,6 @@ options=(
     17 "Helm v${versionHelm}" off
     18 "Bat" on
     21 "Wine" off
-    25 "Emacs" on
     26 "Atom" off
     30 "Software Center (visual pkcon)" off
     32 "Google Cloud SDK" off
@@ -703,30 +632,6 @@ do
             fi
             installComposer;
         ;;
-        09)
-            if [[ ${installedNode} -ne 1 ]]; then
-                installNode;
-            fi
-            installReactNative;
-        ;;
-        10)
-            if [[ ${installedNode} -ne 1 ]]; then
-                installNode;
-            fi
-            installCordova;
-        ;;
-        11)
-            if [[ ${installedNode} -ne 1 ]]; then
-                installNode;
-            fi
-            installPhoneGap;
-        ;;
-        12)
-            if [[ ${installedNode} -ne 1 ]]; then
-                installNode;
-            fi
-            installWebpack;
-        ;;
         13) installMemcached ;;
         14) installRedis ;;
         15) installDocker ;;
@@ -743,15 +648,6 @@ do
         21) installWine ;;
         23) installSqLite ;;
         24) installDbeaver ;;
-        25)             
-            # if [[ ${installedFlatpak} -ne 1 ]]; then
-            #     installFlatpak;
-            # fi
-            if [[ ${installedGit} -ne 1 ]]; then
-                installGit;
-            fi
-            installEmacs;
-        ;;
         26) installAtom ;;
         28) installSublime ;;
         30) installSoftwareCenter ;;
