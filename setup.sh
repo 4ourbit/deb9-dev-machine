@@ -74,8 +74,6 @@ curlToFile() {
 installedGit=0;
 installedGo=0;
 installedZsh=0;
-installedPhp=0;
-installedNode=0;
 repoUrl="https://raw.githubusercontent.com/4ourbit/deb9-dev-machine/master/";
 
 ###############################################################
@@ -197,7 +195,6 @@ installNode() {
     sudo apt install -y nodejs;
     sudo chown -R $(whoami) /usr/lib/node_modules;
     sudo chmod -R 777 /usr/lib/node_modules;
-    installedNode=1;
     breakLine;
 }
 
@@ -210,7 +207,6 @@ installPhp() {
     php --version;
 
     sudo pecl install igbinary ds;
-    installedPhp=1;
     breakLine;
 }
 
@@ -285,25 +281,6 @@ installRedis() {
     sudo apt install -y redis-server;
     sudo systemctl start redis;
     sudo systemctl enable redis;
-    breakLine;
-}
-
-# Composer
-##########################################################
-installComposer() {
-    title "Installing Composer";
-    php -r "copy('https://getcomposer.org/installer', '/tmp/composer-setup.php');";
-    sudo php /tmp/composer-setup.php --install-dir=/usr/local/bin --filename=composer;
-    sudo rm /tmp/composer-setup.php;
-    breakLine;
-}
-
-# Laravel Installer
-##########################################################
-installLaravel() {
-    title "Installing Laravel Installer";
-    composer global require "laravel/installer";
-    echo 'export PATH="$PATH:$HOME/.config/composer/vendor/bin"' | tee -a ~/.bashrc;
     breakLine;
 }
 
@@ -626,12 +603,6 @@ do
         05) installPython ;;
         06) installGoLang ;;
         07) installTools ;;
-        08)
-            if [[ ${installedPhp} -ne 1 ]]; then
-                installPhp;
-            fi
-            installComposer;
-        ;;
         13) installMemcached ;;
         14) installRedis ;;
         15) installDocker ;;
@@ -639,17 +610,10 @@ do
         17) installHelm ;;
         18) installBat ;;
         19) installPostman ;;
-        20)
-            if [[ ${installedPhp} -ne 1 ]]; then
-                installPhp;
-            fi
-            installLaravel;
-        ;;
         21) installWine ;;
         23) installSqLite ;;
         24) installDbeaver ;;
         26) installAtom ;;
-        28) installSublime ;;
         30) installSoftwareCenter ;;
         31) installRemmina ;;
         32) installGoogleSdk ;;
