@@ -5,7 +5,6 @@
 ###############################################################
 versionPhp="7.2";
 versionGo="1.11.4";
-versionHelm="2.10.0";
 versionBat="0.12.1";
 versionDapp="0.27.14";
 versionNode="9";
@@ -97,16 +96,6 @@ repoDocker() {
         notify "Adding Docker repository";
         curl -fsSL "https://download.docker.com/linux/debian/gpg" | sudo apt-key add -;
         echo "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list;
-    fi
-}
-
-# Kubernetes
-##########################################################
-repoKubernetes() {
-    if [[ ! -f /etc/apt/sources.list.d/kubernetes.list ]]; then
-        notify "Adding Kubernetes repository";
-        curl -fsSL "https://packages.cloud.google.com/apt/doc/apt-key.gpg" | sudo apt-key add -;
-        echo "deb https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list;
     fi
 }
 
@@ -345,25 +334,6 @@ installDocker() {
     breakLine;
 }
 
-# Kubernetes
-##########################################################
-installKubernetes() {
-    title "Installing Kubernetes";
-    sudo apt install -y kubectl;
-    breakLine;
-}
-
-# Helm
-##########################################################
-installHelm() {
-    title "Installing Helm v${versionHelm}";
-    curl -fsSl "https://storage.googleapis.com/kubernetes-helm/helm-v${versionHelm}-linux-amd64.tar.gz" -o helm.tar.gz;
-    tar -zxvf helm.tar.gz;
-    sudo mv linux-amd64/helm /usr/local/bin/helm;
-    sudo rm -rf linux-amd64 && sudo rm helm.tar.gz;
-    breakLine;
-}
-
 # Bat
 ##########################################################
 installBat() {
@@ -551,8 +521,6 @@ options=(
     01 "Git" on
     07 "Tools (ip, lsof)" on
     15 "Docker CE (with docker compose)" on
-    16 "Kubernetes (Kubectl)" off
-    17 "Helm v${versionHelm}" off
     18 "Bat" on
     21 "Wine" off
     26 "Atom" off
@@ -577,7 +545,6 @@ do
         08) repoPhp ;;
         20) repoPhp ;;
         15) repoDocker ;;
-        16) repoKubernetes ;;
         21) repoWine ;;
         31) repoBackports ;;
         32) repoGoogleSdk ;;
@@ -606,8 +573,6 @@ do
         13) installMemcached ;;
         14) installRedis ;;
         15) installDocker ;;
-        16) installKubernetes ;;
-        17) installHelm ;;
         18) installBat ;;
         19) installPostman ;;
         21) installWine ;;
